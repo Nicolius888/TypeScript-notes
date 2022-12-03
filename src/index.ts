@@ -59,7 +59,11 @@ And now this is a perfect template to start working with TS :)
 
 console.log("Hello TypeScript!")
 
-//Variables:
+
+
+
+//--VARIABLES:
+
 //var, let and const are as valid as in JS
 var name = "John Smith"
 
@@ -67,7 +71,7 @@ let email = "john.smith@gmail.com" //local scope variable
 
 const PI = 3.14159                 //not new assign is permitted (like PI = PI + 1)
 
-//here TS will infer the types, it's not a must to declare, BUT, it is best practice to do it.
+//here TS will infer the types, it's not "a must", to declare them, BUT, it is best practice to do it.
 
 var name2 : string = "Jimmy Smith"
 
@@ -83,12 +87,19 @@ All numbers are stored as floating point numbers.
 These numbers can be Decimal (base 10), Hexadecimal (base 16) or Octal (base 8)."
 */
 
+
+
 //Now the typing is strong, we cannot assign new values with different types to our typed variables:
 //email = 2
 //	"message": "Type 'number' is not assignable to type 'string'.",
 
-// There is an exception to al this
-//  The ANY type
+
+
+
+
+// There is an exception to all this:
+
+//--THE ANY TYPE
 //but since the idea is to have control over the types,
 //to avoid problems, its just reserved for --Really Special Cases--.
 
@@ -97,8 +108,10 @@ let crazyVariable : any = "hello anyone!"
 crazyVariable = 34
 crazyVariable = [1,2,3,"a","b","c"]
 
-//new values with different types
-//if you are searching for that, try JavaScript, lol.
+//new values with different types are valid here.
+// but if you are searching for that, try JavaScript, lol.
+
+
 
 
 

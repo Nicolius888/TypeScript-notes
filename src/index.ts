@@ -114,5 +114,52 @@ crazyVariable = [1,2,3,"a","b","c"]
 
 
 
+//its valid to CREATE AND THEN PROVIDE VALUE:
+let error : boolean
+error = true
+
+//and of course we can OVERRIDE THE VALUE:
+error = false
+
+//NEVER THE TYPE:
+// error : string
+
+//	    "message": "'string' only refers to a type, but is being used as a value here.",
+
+
+
+//INSTANCIATE MULTIPLE VARIABLES:
+let a : string, b : number, c : boolean
+
+a = "hello world"
+b = 83770.30872
+c = true
+
+//--------------------------------------------------------------------
+
+
+//So, by now we already see the BuiltIn or PRIMITIVE TYPES:
+//string, number, boolean, null,undefined, void.
+
+//and we have complex or NON PRIMITIVE TYPES:
+let myArray : string[] = ["hello", "world", "!"]
+
+//i.e. string[] === array of strings
+
+//but if we provide with a lot of different objects to an array without a declared type, like:
+let lotOfThings = [false, "hello", 23, true]
+
+//we can see that TS infer this as type "(string | boolean | number)[]"
+//i.e.: a strings, booleans and numbers array.
+//and we can declare the arrays in this format
+
+let someThings : (string | null | boolean | number)[] = ["hell0_w0rld_!", 23, null] //not neccesary to complete all the types...
+
+someThings.push(false) //...but allowed to do it later
+
+console.log(someThings) // [ 'hell0_w0rld_!', 23, null, false ]
+
+
+
 
 

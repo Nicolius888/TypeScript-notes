@@ -118,7 +118,7 @@ crazyVariable = [1,2,3,"a","b","c"]
 let error : boolean
 error = true
 
-//and of course we can OVERRIDE THE VALUE:
+//and of course we can OVERWRITE THE VALUE:
 error = false
 
 //NEVER THE TYPE:
@@ -150,14 +150,158 @@ let myArray : string[] = ["hello", "world", "!"]
 let lotOfThings = [false, "hello", 23, true]
 
 //we can see that TS infer this as type "(string | boolean | number)[]"
-//i.e.: a strings, booleans and numbers array.
+//i.e.: a strings, nulls, booleans and numbers array.
 //and we can declare the arrays in this format
 
-let someThings : (string | null | boolean | number)[] = ["hell0_w0rld_!", 23, null] //not neccesary to complete all the types...
+let someThings : (string | null | boolean | number)[] = ["hell0_w0rld_!", 23, null] //is not neccesary to complete all the types...
 
 someThings.push(false) //...but allowed to do it later
 
 console.log(someThings) // [ 'hell0_w0rld_!', 23, null, false ]
+
+
+
+
+//---------------------ENUMS TYPE:
+
+//This is a custom type that works as a typical JS object:
+
+enum Status {
+    "Complete", 
+    "Incomplete",
+    "Pending"
+}
+ //So we have a type that provides variations, a common use will be:
+
+ let taskOne : Status = Status.Pending   //taskOne === 2
+
+ //the structure is: var declaration : enum type = enum.key
+
+ /*
+ See how "Pending" works as a KEY
+ This meaning that the value of the variable will be his VALUE
+ And when we talk about ENUM type this values are CRECSENT NUMBERS
+ */
+
+//---------------------------------
+
+//Modify ENUM
+
+//By default the enumeration of our keys will start by zero
+//just changing the first value, we increase all the secuence.
+
+ enum bigStatus {
+    "Complete" = 6,
+    "Incomplete",
+    "Pending"
+ }
+
+ let taskTwo : bigStatus = bigStatus.Pending   //taskTwo === 8
+
+//--------------------------------
+
+//We can also play with the values like
+
+enum statusCode {
+    "Complete" = 10,
+    "Incomplete" = 40,
+    "Pending"
+}
+
+let taskThree : statusCode = statusCode.Pending //taskThree === 41
+
+//We can put arbitrary numbers but if we stop declaring them, TS will behave as always
+//increasing the next.
+
+//--------------------------------
+
+//We can use string too, but
+//as that can't be increased we will have to decalre all the values.
+
+enum stringStatus {
+    "Complete" = "C",
+    "Incomplete" = "I",
+    "Pending" = "P"
+}
+
+let taskFour : stringStatus = stringStatus.Pending //taskFour === "P"
+
+
+//--------------------------------
+
+//Check this cool beahviour
+//Anything after the number will be the increased number by default, 
+//But if we add a string, TS will stop doing that
+//But is a valid way of combining values
+
+
+enum CombinedStatus {
+    "Complete" = 1,
+    "Incomplete",
+    "Pending",
+    "Name" = "Roger"
+}
+
+let taskFive : CombinedStatus[] = [CombinedStatus.Pending, CombinedStatus.Name] //taskFive === [3, Roger]
+
+//and this task is "Pending" and "asigned to Roger".
+
+//--------------------------------
+
+//Other example jumping the number values
+
+enum sequenceStatus {
+    "Complete" = 1,
+    "Incomplete",
+    "Pending",
+    "inProcess" = 10,
+    "inReview",
+    "Reasigned"
+}
+
+let taskSix : sequenceStatus[] = [sequenceStatus.Pending, sequenceStatus.Reasigned] //taskSix === [3, 12]
+//this task is "Pending" and was "Reasigned".
+
+//Pretty intuitive behaviour isn't it? 
+
+
+
+
+//-----------------------------------------------------------------
+
+
+//-------INTERFACES:
+
+//This are at first sight, like templates to build objects
+
+interface Task {
+    name : string,
+    status : Status,
+    urgency : number
+}
+
+let taskSeven : Task = {
+    name : "add a feature",
+    status : Status.Complete,
+    urgency : 5
+}
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
 
 
 

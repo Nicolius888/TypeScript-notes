@@ -276,16 +276,77 @@ let taskSix : sequenceStatus[] = [sequenceStatus.Pending, sequenceStatus.Reasign
 
 interface Task {
     name : string,
-    status : Status,
+    status : stringStatus,
     urgency : number
 }
 
 let taskSeven : Task = {
     name : "add a feature",
-    status : Status.Complete,
+    status : stringStatus.Complete,
     urgency : 5
 }
 
+//----------TYPE CREATION
+
+//And this at first sight are the same as interfaces,
+//we'll talk later more in depth, but the idea is to use it when we want a more complex typing.
+
+type Product = {
+    name : string,
+    price : number,
+    year : number
+}
+
+let Car : Product = {
+    name : "Audi",
+    price : 45.000,
+    year : 2017
+}
+
+//a simple use case
+console.log(Car.year < 2007 ? `This ${Car.name} car is old.` : `This ${Car.name} car is new.`)
+
+
+
+//-----------------------------------------------------------------------------------
+//Ifs, switchs and try-catch statements for control flow works the same, so let see some loop JS-TS differences .
+
+
+//------LOOPS COMMON CASES:
+
+//For Each:
+
+let tasksForToday : Task[] = [
+    {
+        name : "task 1",
+        status : stringStatus.Pending,
+        urgency : 0
+    },
+    {
+        name : "task 2",
+        status : stringStatus.Complete,
+        urgency : 10
+    },
+    {
+        name : "task 3",
+        status : stringStatus.Incomplete,
+        urgency : 5
+    }
+]                                                         //array of tasks, each one with his required fields.
+
+
+tasksForToday.forEach((task : Task, index : number)=>{
+    console.log(`${index}.-${task.name} status is: ${task.status}`)
+})
+
+//So in this case, the only difference is that when declaring the arguments, we must specify the type.
+
+/*
+Output:
+0.-task 1 status is: P
+1.-task 2 status is: C
+2.-task 3 status is: I
+*/
 
 
 

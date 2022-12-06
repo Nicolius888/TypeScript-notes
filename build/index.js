@@ -88,7 +88,7 @@ crazyVariable = [1, 2, 3, "a", "b", "c"];
 //its valid to CREATE AND THEN PROVIDE VALUE:
 let error;
 error = true;
-//and of course we can OVERRIDE THE VALUE:
+//and of course we can OVERWRITE THE VALUE:
 error = false;
 //NEVER THE TYPE:
 // error : string
@@ -107,8 +107,119 @@ let myArray = ["hello", "world", "!"];
 //but if we provide with a lot of different objects to an array without a declared type, like:
 let lotOfThings = [false, "hello", 23, true];
 //we can see that TS infer this as type "(string | boolean | number)[]"
-//i.e.: a strings, booleans and numbers array.
+//i.e.: a strings, nulls, booleans and numbers array.
 //and we can declare the arrays in this format
-let someThings = ["hell0_w0rld_!", 23, null];
-someThings.push(false);
-console.log(someThings);
+let someThings = ["hell0_w0rld_!", 23, null]; //is not neccesary to complete all the types...
+someThings.push(false); //...but allowed to do it later
+console.log(someThings); // [ 'hell0_w0rld_!', 23, null, false ]
+//---------------------ENUMS TYPE:
+//This is a custom type that works as a typical JS object:
+var Status;
+(function (Status) {
+    Status[Status["Complete"] = 0] = "Complete";
+    Status[Status["Incomplete"] = 1] = "Incomplete";
+    Status[Status["Pending"] = 2] = "Pending";
+})(Status || (Status = {}));
+//So we have a type that provides variations, a common use will be:
+let taskOne = Status.Pending; //taskOne === 2
+//the structure is: var declaration : enum type = enum.key
+/*
+See how "Pending" works as a KEY
+This meaning that the value of the variable will be his VALUE
+And when we talk about ENUM type this values are CRECSENT NUMBERS
+*/
+//---------------------------------
+//Modify ENUM
+//By default the enumeration of our keys will start by zero
+//just changing the first value, we increase all the secuence.
+var bigStatus;
+(function (bigStatus) {
+    bigStatus[bigStatus["Complete"] = 6] = "Complete";
+    bigStatus[bigStatus["Incomplete"] = 7] = "Incomplete";
+    bigStatus[bigStatus["Pending"] = 8] = "Pending";
+})(bigStatus || (bigStatus = {}));
+let taskTwo = bigStatus.Pending; //taskTwo === 8
+//--------------------------------
+//We can also play with the values like
+var statusCode;
+(function (statusCode) {
+    statusCode[statusCode["Complete"] = 10] = "Complete";
+    statusCode[statusCode["Incomplete"] = 40] = "Incomplete";
+    statusCode[statusCode["Pending"] = 41] = "Pending";
+})(statusCode || (statusCode = {}));
+let taskThree = statusCode.Pending; //taskThree === 41
+//We can put arbitrary numbers but if we stop declaring them, TS will behave as always
+//increasing the next.
+//--------------------------------
+//We can use string too, but
+//as that can't be increased we will have to decalre all the values.
+var stringStatus;
+(function (stringStatus) {
+    stringStatus["Complete"] = "C";
+    stringStatus["Incomplete"] = "I";
+    stringStatus["Pending"] = "P";
+})(stringStatus || (stringStatus = {}));
+let taskFour = stringStatus.Pending; //taskFour === "P"
+//--------------------------------
+//Check this cool beahviour
+//Anything after the number will be the increased number by default, 
+//But if we add a string, TS will stop doing that
+//But is a valid way of combining values
+var CombinedStatus;
+(function (CombinedStatus) {
+    CombinedStatus[CombinedStatus["Complete"] = 1] = "Complete";
+    CombinedStatus[CombinedStatus["Incomplete"] = 2] = "Incomplete";
+    CombinedStatus[CombinedStatus["Pending"] = 3] = "Pending";
+    CombinedStatus["Name"] = "Roger";
+})(CombinedStatus || (CombinedStatus = {}));
+let taskFive = [CombinedStatus.Pending, CombinedStatus.Name]; //taskFive === [3, Roger]
+//and this task is "Pending" and "asigned to Roger".
+//--------------------------------
+//Other example jumping the number values
+var sequenceStatus;
+(function (sequenceStatus) {
+    sequenceStatus[sequenceStatus["Complete"] = 1] = "Complete";
+    sequenceStatus[sequenceStatus["Incomplete"] = 2] = "Incomplete";
+    sequenceStatus[sequenceStatus["Pending"] = 3] = "Pending";
+    sequenceStatus[sequenceStatus["inProcess"] = 10] = "inProcess";
+    sequenceStatus[sequenceStatus["inReview"] = 11] = "inReview";
+    sequenceStatus[sequenceStatus["Reasigned"] = 12] = "Reasigned";
+})(sequenceStatus || (sequenceStatus = {}));
+let taskSix = [sequenceStatus.Pending, sequenceStatus.Reasigned]; //taskSix === [3, 12]
+let taskSeven = {
+    name: "add a feature",
+    status: stringStatus.Complete,
+    urgency: 5
+};
+let Car = {
+    name: "Audi",
+    price: 45.000,
+    year: 2017
+};
+//a simple use case
+console.log(Car.year < 2007 ? `This ${Car.name} car is old.` : `This ${Car.name} car is new.`);
+//-----------------------------------------------------------------------------------
+//Ifs, switchs and try-catch statements for control flow works the same, so let see some loop JS-TS differences .
+//------LOOPS COMMON CASES:
+//For Each:
+let tasksForToday = [
+    {
+        name: "task 1",
+        status: stringStatus.Pending,
+        urgency: 0
+    },
+    {
+        name: "task 2",
+        status: stringStatus.Complete,
+        urgency: 10
+    },
+    {
+        name: "task 3",
+        status: stringStatus.Incomplete,
+        urgency: 5
+    }
+]; //array of tasks, each one with his required fields.
+tasksForToday.forEach((task, index) => {
+    console.log(`${index}.-${task.name} status is: ${task.status}`);
+});
+//So in this case, the only difference is that when declaring the arguments, we must specify the type.

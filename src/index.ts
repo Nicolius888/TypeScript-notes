@@ -65,7 +65,7 @@ console.log("Hello TypeScript!")
 //--VARIABLES:
 
 //var, let and const are as valid as in JS
-var name = "John Smith"
+var name1 = "John Smith"
 
 let email = "john.smith@gmail.com" //local scope variable
 
@@ -282,9 +282,53 @@ interface Task {
 
 let taskSeven : Task = {
     name : "add a feature",
-    status : stringStatus.Complete,
+    status : stringStatus.Incomplete,
     urgency : 5
 }
+
+
+
+let taskNew : Task = {
+    name : "do it",
+    status : stringStatus.Complete,
+    urgency : 0
+}
+
+//Valid interface "Extension", ( just using interface as a type.)
+interface Update {
+    data : Task
+    version : number
+}
+
+let taskSevenUpdate : Update = {
+    data : taskSeven,
+    version : 1.0
+}
+
+
+
+
+
+
+//Asingation tip:
+
+
+//one to one factor
+//as we have acces to the values, this work as common objects.
+
+let myTaskName = taskSeven.name
+let myTaskStatus = taskSeven.status
+let myTaskUrgency = taskSeven.urgency   //see how the types are already defined here
+
+//---
+//Propagation factor
+let {name, status, urgency} = taskSeven
+//new variables to "extract" the values
+//this case require the exact same names.
+
+
+
+
 
 //----------TYPE CREATION
 
@@ -349,15 +393,98 @@ Output:
 */
 
 
+//--------FOR-IN / FOR-OF:
+
+let someData : string[] = ["H","e","l","l","o"," ","W","o","r","l","d","!"]
+
+for(const i in someData){
+    console.log(someData[i])
+}
+
+for(const i of someData){
+    console.log(i)
+}
+
+/*
+Same Outputs: 
+H
+e
+l
+l
+o
+
+W
+o
+r
+l
+d
+!
+*/
+
+//So, FOR-IN works with the INDEX
+//FOR-OF with the VALUE
+
+
+//lets try to get the same result as in the ForEach above.
+
+//FOR-IN
+for( const i in tasksForToday ){
+    console.log(`${i}.-${tasksForToday[i].name} status is: ${tasksForToday[i].status}`)
+}
+/*
+Output:
+0.-task 1 status is: P
+1.-task 2 status is: C
+2.-task 3 status is: I
+*/
+
+
+//FOR-OF
+for( const task of tasksForToday ){
+    console.log(`${tasksForToday.indexOf(task)}.-${task.name} status is: ${task.status}`)
+}
+
+
+//Of course, this is just to show behaviour
+//this will never be more practical than the ForEach example!
+
+
+
+//-----Classic FOR LOOP:
+
+for(let i : number = 0; i < tasksForToday.length; i++){
+    console.log(`${i}.-${tasksForToday[i].name} status is: ${tasksForToday[i].status}`)
+}
+//Same output.
+
+//Just need to add the i type.
+
+
+//--------WHILE and DO-WHILE:
+
+//works the same as JS.
+
+while(taskSeven.status !== "C" ){
+    if(taskSeven.urgency === 10){
+        console.log("Please finish task number 7 first!")
+        break
+    }
+    taskSeven.urgency++
+    console.log(`task 7 urgency increased to ${taskSeven.urgency}`)
+}
+
+
+
+//do while condition ALWAYS run at least one time.
+
+do{ 
+    console.log("can't continue...") //run just one time...
+    taskSeven.urgency--
+ }while(taskSeven.urgency === 10)
 
 
 
 
-
-
-
-
- 
 
 
 

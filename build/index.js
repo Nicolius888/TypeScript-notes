@@ -188,7 +188,7 @@ var sequenceStatus;
 let taskSix = [sequenceStatus.Pending, sequenceStatus.Reasigned]; //taskSix === [3, 12]
 let taskSeven = {
     name: "add a feature",
-    status: stringStatus.Complete,
+    status: stringStatus.Incomplete,
     urgency: 5
 };
 let Car = {
@@ -223,3 +223,72 @@ tasksForToday.forEach((task, index) => {
     console.log(`${index}.-${task.name} status is: ${task.status}`);
 });
 //So in this case, the only difference is that when declaring the arguments, we must specify the type.
+/*
+Output:
+0.-task 1 status is: P
+1.-task 2 status is: C
+2.-task 3 status is: I
+*/
+//--------FOR-IN / FOR-OF:
+let someData = ["H", "e", "l", "l", "o", " ", "W", "o", "r", "l", "d", "!"];
+for (const i in someData) {
+    console.log(someData[i]);
+}
+for (const i of someData) {
+    console.log(i);
+}
+/*
+Same Outputs:
+H
+e
+l
+l
+o
+
+W
+o
+r
+l
+d
+!
+*/
+//So, FOR-IN works with the INDEX
+//FOR-OF with the VALUE
+//lets try to get the same result as in the ForEach above.
+//FOR-IN
+for (const i in tasksForToday) {
+    console.log(`${i}.-${tasksForToday[i].name} status is: ${tasksForToday[i].status}`);
+}
+/*
+Output:
+0.-task 1 status is: P
+1.-task 2 status is: C
+2.-task 3 status is: I
+*/
+//FOR-OF
+for (const task of tasksForToday) {
+    console.log(`${tasksForToday.indexOf(task)}.-${task.name} status is: ${task.status}`);
+}
+//Of course, this is just to show behaviour
+//this will never be more practical than the ForEach example!
+//-----Classic FOR LOOP:
+for (let i = 0; i < tasksForToday.length; i++) {
+    console.log(`${i}.-${tasksForToday[i].name} status is: ${tasksForToday[i].status}`);
+}
+//Same output.
+//Just need to add the i type.
+//--------WHILE and DO-WHILE:
+//works the same as JS.
+while (taskSeven.status !== "C") {
+    if (taskSeven.urgency === 10) {
+        console.log("Please finish task number 7 first!");
+        break;
+    }
+    taskSeven.urgency++;
+    console.log(`task 7 urgency increased to ${taskSeven.urgency}`);
+}
+//do while condition ALWAYS run at least one time.
+do {
+    console.log("can't continue...");
+    taskSeven.urgency--;
+} while (taskSeven.urgency === 10);

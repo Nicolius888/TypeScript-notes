@@ -633,11 +633,14 @@ let developer : Employee = {
     salary : 45000
 }
 
-let verifySalary = (employee : Employee, salary: (employee2 : Employee) =>{} ) : string | void => {
+let verifySalary = (employee : Employee, salary: (employee2 : Employee) => number ) : string | void => { 
 
     //The second param salary, is a callback that recives a param Employee type too.
+    //we can say that salary returns a type <()=>type> or just <()=>{}>
+
+
     //so verifySalary recies an employee, and salary recives his own employee
-    //that in this case is the same.
+    //that in this case is the same when verifySalary in invoked.
     //We receive it as a param , an then we use it as a param for our callback.
 
     if(employee.age > 70){
@@ -663,7 +666,68 @@ verifySalary(developer, getSalary) //45000
 
 //very dirty example, we are going deep on this later...
 
+//The core idea here is to see how we can put multipl functions inside another
+//and have a flow thah manipulates then as the program requires it.
 
 
 
-//----
+
+
+//--------------ASYNC FUNCTIONS:
+
+async function asyncTask () : Promise<string> {
+
+    await console.log("async task to complete before the time expires")
+    return "async response"
+
+}
+
+
+//----then.catch.finally treatment:
+asyncTask()
+.then((response)=>{
+
+    console.log(response)
+
+}).catch((error)=>{
+
+    console.log(error)
+
+}).finally(()=>{
+
+    console.log("async task complete")
+
+})
+
+/*
+ * Output:
+async task to complete before the time expires
+async response
+async task complete
+*/
+
+
+//--------------GENERATORS:
+
+function* generatorEx (){
+
+    //yield-->keyword to emit values
+
+    let index = 0
+
+    while(index < 5){
+        yield index++  //emit an incremented value (value++ is return then increment, thats why we get from 0 to 4)
+    }
+
+}
+
+//save it in a variable
+let generate = generatorEx()
+
+//Here we acces to the emitted values
+console.log(generate.next().value)//0  //.next generates the next value, .value return the value
+console.log(generate.next().value)//1
+console.log(generate.next().value)//2
+console.log(generate.next().value)//3
+console.log(generate.next().value)//4
+console.log(generate.next().value)//undefined

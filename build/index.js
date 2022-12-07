@@ -56,6 +56,15 @@ now with just npm run start:prod we compile and execute our code at same time.
 
 And now this is a perfect template to start working with TS :)
 */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 console.log("Hello TypeScript!");
 //--VARIABLES:
 //var, let and const are as valid as in JS
@@ -389,7 +398,12 @@ let developer = {
     age: 23,
     salary: 45000
 };
-let salary = (employee, salary) => {
+let verifySalary = (employee, salary) => {
+    //The second param salary, is a callback that recives a param Employee type too.
+    //we can say that salary returns a type <()=>type> or just <()=>{}>
+    //so verifySalary recies an employee, and salary recives his own employee
+    //that in this case is the same when verifySalary in invoked.
+    //We receive it as a param , an then we use it as a param for our callback.
     if (employee.age > 70) {
         return;
     }
@@ -399,4 +413,48 @@ let salary = (employee, salary) => {
     }
 };
 let getSalary = (employee) => { return employee.salary; };
-salary(developer, getSalary);
+//outside we have the real function that returns the salary
+//now we just need to invoke verifySalary, with the employee and the callback function as an argument.
+verifySalary(developer, getSalary); //45000
+//very dirty example, we are going deep on this later...
+//The core idea here is to see how we can put multipl functions inside another
+//and have a flow thah manipulates then as the program requires it.
+//--------------ASYNC FUNCTIONS:
+function asyncTask() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield console.log("async task to complete before the time expires");
+        return "async response";
+    });
+}
+//----then.catch.finally treatment:
+asyncTask()
+    .then((response) => {
+    console.log(response);
+}).catch((error) => {
+    console.log(error);
+}).finally(() => {
+    console.log("async task complete");
+});
+/*
+ * Output:
+async task to complete before the time expires
+async response
+async task complete
+*/
+//--------------GENERATORS:
+function* generatorEx() {
+    //yield-->keyword to emit values
+    let index = 0;
+    while (index < 5) {
+        yield ++index; //emit an incremented value (value++ is return then increment, thats why we get from 0 to 4)
+    }
+}
+//save it in a variable
+let generate = generatorEx();
+//Here we acces to the emitted values
+console.log(generate.next().value); //0  //.next generates the next value, .value return the value
+console.log(generate.next().value); //1
+console.log(generate.next().value); //2
+console.log(generate.next().value); //3
+console.log(generate.next().value); //4
+console.log(generate.next().value); //undefined

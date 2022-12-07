@@ -59,7 +59,7 @@ And now this is a perfect template to start working with TS :)
 console.log("Hello TypeScript!");
 //--VARIABLES:
 //var, let and const are as valid as in JS
-var name = "John Smith";
+var name1 = "John Smith";
 let email = "john.smith@gmail.com"; //local scope variable
 const PI = 3.14159; //not new assign is permitted (like PI = PI + 1)
 //here TS will infer the types, it's not "a must", to declare them, BUT, it is best practice to do it.
@@ -191,6 +191,24 @@ let taskSeven = {
     status: stringStatus.Incomplete,
     urgency: 5
 };
+let taskNew = {
+    name: "do it",
+    status: stringStatus.Complete,
+    urgency: 0
+};
+let taskSevenUpdate = {
+    data: taskSeven,
+    version: 1.0
+};
+//Asingation tip:
+//one to one factor
+//as we have acces to the values, this work as common objects.
+let myTaskName = taskSeven.name;
+let myTaskStatus = taskSeven.status;
+let myTaskUrgency = taskSeven.urgency; //see how the types are already defined here
+//---
+//Propagation factor
+let { name, status, urgency } = taskSeven;
 let Car = {
     name: "Audi",
     price: 45.000,
@@ -289,6 +307,96 @@ while (taskSeven.status !== "C") {
 }
 //do while condition ALWAYS run at least one time.
 do {
-    console.log("can't continue...");
+    console.log("can't continue..."); //run just one time...
     taskSeven.urgency--;
 } while (taskSeven.urgency === 10);
+//-----------------------FUNCTIONS:                        -------------------------------->>
+/**
+ * Function to give greeting message by console
+ * @param name name of the person to greet
+ */
+function print(name) {
+    console.log(`Hello ${name}!`);
+}
+//now if we select the function we can see the docs
+print("World");
+//print(2)  //if we pass another type we get an error.
+//----DEFAULT PARAMETERS:
+/**
+ * function to give greetings
+ * but if it doesn't receive a value for "name",
+ *it will return a Hello World!
+ * @param name by default will be "World".
+ *  */
+function print2(name = "World") {
+    console.log(`Hello ${name}!`);
+}
+print2(); //Hello World!
+print2("Jose"); //Hello Jose!
+print2(name = "cool feature"); //we can names the params, this is useful when we have a lot of params.
+//----ACCEPT UNDEFINED PARAMETERS:
+/**
+ * Function to say goodbye to user
+ * @param name (Optional) if not given will return a generic goodbye.
+ */
+function goodbye(name) {
+    if (name) {
+        console.log(`Goodbye ${name}!`);
+    }
+    else {
+        console.log("Goodbye World!");
+    }
+}
+goodbye(); //Goodbye World!
+goodbye("Leo"); //Goodbye Leo!
+//So param? is for a parameter that can exist or not.
+//param : type = "default value" if for a parameter that can be defined or if it not, it will have a default value.
+//----OPTIONAL TYPES:
+function typeCheck(a) {
+    if (typeof a === "string") {
+        console.log("it's a string");
+    }
+    else if (typeof a === "number") {
+        console.log("it's a number");
+    }
+}
+typeCheck("hi");
+typeCheck(34);
+//----MULTIPLE RETURN TYPES:
+function returnExample(a) {
+    return `Hello ${a}!`;
+}
+const info = returnExample("world");
+const info2 = returnExample(8);
+//----LISTS AS PARAMS:
+/**
+ * @param list is a list, it acepts an array of string <...array>
+ * or just lots of strings <"foo","bar","foobar">
+ */
+function multipleParams(...list) {
+    list.forEach(str => console.log(str));
+}
+multipleParams("hi", "hello", "goodbye"); //in this case an array is generated inside the function.
+let mySet = ["goodbye", "hello", "hi"];
+multipleParams(...mySet);
+//------------------ARROW FUNCTIONS:
+//In general they work the same as in ES6...
+let fnctn = () => console.log("hi");
+let newFunc = (a) => { return a; };
+//create an instance
+let developer = {
+    name: "John",
+    age: 23,
+    salary: 45000
+};
+let salary = (employee, salary) => {
+    if (employee.age > 70) {
+        return;
+    }
+    else {
+        let newSalary = salary(employee); //callback to execute
+        console.log(newSalary);
+    }
+};
+let getSalary = (employee) => { return employee.salary; };
+salary(developer, getSalary);

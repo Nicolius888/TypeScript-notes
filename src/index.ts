@@ -487,11 +487,183 @@ do{
 
 
 
+//-----------------------FUNCTIONS:                        -------------------------------->>
+
+
+/**
+ * Function to give greeting message by console
+ * @param name name of the person to greet
+ */
+
+function print(name : string) : void{
+    console.log(`Hello ${name}!`)
+}
+
+//now if we select the function we can see the docs
+
+print("World")
+//print(2)  //if we pass another type we get an error.
+
+
+
+
+//----DEFAULT PARAMETERS:
+/**
+ * function to give greetings 
+ * but if it doesn't receive a value for "name",
+ *it will return a Hello World!
+ * @param name by default will be "World".
+ *  */ 
+
+function print2(name : string = "World") : void{
+    console.log(`Hello ${name}!`)
+ }
+
+print2()       //Hello World!
+print2("Jose") //Hello Jose!
+print2(name="cool feature") //we can names the params, this is useful when we have a lot of params.
+
+
+
+//----ACCEPT UNDEFINED PARAMETERS:
+
+/**
+ * Function to say goodbye to user
+ * @param name (Optional) if not given will return a generic goodbye.
+ */
+
+function goodbye(name? : string) : void {   //another valid syntax will be <name : string | undefined>
+
+    if(name){
+        console.log(`Goodbye ${name}!`)
+    } else {
+        console.log("Goodbye World!")
+    }
+
+}
 
 
 
 
 
+goodbye()       //Goodbye World!
+goodbye("Leo")  //Goodbye Leo!
 
 
 
+//So param? is for a parameter that can exist or not.
+//param : type = "default value" if for a parameter that can be defined or if it not, it will have a default value.
+
+//----OPTIONAL TYPES:
+
+function typeCheck(a : string | number) : void{
+
+    if(typeof a === "string"){
+        console.log("it's a string")
+    } else if(typeof a === "number"){
+        console.log("it's a number")
+    }
+
+}
+
+typeCheck("hi")
+typeCheck(34)
+
+
+
+
+//----MULTIPLE RETURN TYPES:
+
+function returnExample(a : string | number) : string | number {
+    return `Hello ${a}!`
+}
+
+const info : string | number = returnExample("world")
+const info2 : string | number = returnExample(8)
+
+
+
+
+//----LISTS AS PARAMS:
+
+/**
+ * @param list is a list, it acepts an array of string <...array>
+ * or just lots of strings <"foo","bar","foobar">
+ */
+
+function multipleParams(...list : string[]) : void{
+
+    list.forEach(str => 
+        console.log(str)
+        )
+
+}
+
+multipleParams("hi", "hello", "goodbye") //in this case an array is generated inside the function.
+
+let mySet : string[] = ["goodbye", "hello", "hi"]
+
+multipleParams(...mySet)
+
+
+//------------------ARROW FUNCTIONS:
+
+//In general they work the same as in ES6...
+
+let fnctn = () : void => console.log("hi")
+
+let newFunc = (a : string) : string => {return a}
+
+
+//ways of passing callbacks
+
+//lets make our own type:
+
+type Employee = {
+    name : string,
+    age : number,
+    salary : number
+}
+
+//create an instance
+
+let developer : Employee = {
+    name : "John",
+    age : 23,
+    salary : 45000
+}
+
+let verifySalary = (employee : Employee, salary: (employee2 : Employee) =>{} ) : string | void => {
+
+    //The second param salary, is a callback that recives a param Employee type too.
+    //so verifySalary recies an employee, and salary recives his own employee
+    //that in this case is the same.
+    //We receive it as a param , an then we use it as a param for our callback.
+
+    if(employee.age > 70){
+        return 
+    } else {
+        let newSalary = salary(employee) //callback to execute
+        console.log(newSalary)
+    }
+
+}
+
+let getSalary = (employee : Employee) : number => {return employee.salary} 
+//outside we have the real function that returns the salary
+
+
+
+
+//now we just need to invoke verifySalary, with the employee and the callback function as an argument.
+verifySalary(developer, getSalary) //45000
+
+
+
+
+//very dirty example, we are going deep on this later...
+
+
+
+
+//----

@@ -56,6 +56,9 @@ now with just npm run start:prod we compile and execute our code at same time.
 And now this is a perfect template to start working with TS :)
 */
 
+import { AsyncLocalStorage } from "async_hooks"
+import { CLIENT_RENEG_WINDOW } from "tls"
+
 
 console.log("Hello TypeScript!")
 
@@ -790,5 +793,109 @@ versatilTask("hey") //your string is:hey
 //             ---->Saves data with an expiration date and has an URL scope.
 
 
+// function setSomethingInLS(name : string) : void{
+//                     //key-value
+//     localStorage.set("name",  "john")
+// }
+
+// function getSomethingFromLS() : void {
+//     AsyncLocalStorage.get("name")
+// }
 
 
+
+
+//--Cookies
+
+//will use cookies-utils dependency for this example, there are multiple dependencies to manage cookies.
+//npm i cookies-utils --save
+import { deleteAllCookies, deleteCookie, getCookieValue, setCookie } from 'cookies-utils'
+
+const cookieOptions = {
+    name:"user",    // string,
+    value:"John",  // string,
+    maxAge:10*60,   // Availabe time,optional number (value in seconds),
+    expires:new Date(2099, 10, 1),  //expiration optional Date,
+    path:"/",   // optional string,
+    }
+
+
+// //set the cookie
+//setCookie(cookieOptions)
+
+// //get cookier
+// let userCookie = getCookieValue("user")
+
+// //delete the cookie
+// deleteCookie("user")
+
+// //delete all cookies
+// deleteAllCookies()
+
+
+
+
+
+
+
+//-----------EVENTS:
+
+class Timer {
+
+    //properties:
+
+    public finish? : (name : string) => void     //finish will be a callback function that return void, has not body yet.
+    
+    public finishWithDate? : (date : string) => void 
+
+    public start(name : string) : void {      
+        setTimeout(() => {
+                //since finish is optional we check for it (TS need this check)
+                if(!this.finish) return
+                //then run it
+                this.finish(name)
+        }, 1000)
+    }
+
+    public startWithDate() : void {        
+        setInterval(() => {
+                //since finish is optional we check for it
+                if(!this.finishWithDate) return
+                //then run it
+                this.finishWithDate(new Date().toString())
+        }, 1000)
+    }
+}
+
+//new Timer instance
+let myTimer : Timer = new Timer()    //note how we use the same class as the type.
+
+
+//now we write the finish method, the idea of not decalring it is that we can change his behaviour whenever we want.
+
+myTimer.finish = (name : string) => {
+    console.log("Event finished by " + name)
+}
+
+myTimer.finishWithDate = (date : string) => {
+    console.log("Event finished on: " + date)
+}
+
+//the we run the start of the timer.
+myTimer.start("nico")  //Event finished by nico
+myTimer.startWithDate()//Event finished on: Thu Dec 08 2022 06:57:42 GMT-0300 (Argentina Standard Time)
+
+
+//What we have here? methods that gives us a callback to what we want when they finish.
+
+
+//we can delete this properties too. in case we need something to stop executing.
+
+// let del = () => delete myTimer.finishWithDate
+// setTimeout(del, 4000)
+
+//now the execution stops after 3 "finish with date" excutions.
+//BUT the interpreter doesn't end the execution, just stand still, it not even breaks the code.
+//TODO:investigate more how delete works here
+
+//this quit all the "finish With Date" executions of the code.

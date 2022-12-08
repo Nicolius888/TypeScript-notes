@@ -65,6 +65,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 console.log("Hello TypeScript!");
 //--VARIABLES:
 //var, let and const are as valid as in JS
@@ -482,6 +483,58 @@ console.log("wa:" + generator.next().value); //4 by worker
 function versatilTask(input) {
     typeof (input) === "string" ? console.log("your string is:" + input) : console.log("your number is:" + input);
 }
-versatilTask(55); //
-versatilTask("hey"); //
-//just declaring different possibles types for an input, we can develop multiple behaviours.
+versatilTask(55); //your number is:55
+versatilTask("hey"); //your string is:hey
+const cookieOptions = {
+    name: "user",
+    value: "John",
+    maxAge: 10 * 60,
+    expires: new Date(2099, 10, 1),
+    path: "/", // optional string,
+};
+// //set the cookie
+//setCookie(cookieOptions)
+// //get cookier
+// let userCookie = getCookieValue("user")
+// //delete the cookie
+// deleteCookie("user")
+// //delete all cookies
+// deleteAllCookies()
+//-----------EVENTS:
+class Timer {
+    start(name) {
+        setTimeout(() => {
+            //since finish is optional we check for it (TS need this check)
+            if (!this.finish)
+                return;
+            //then run it
+            this.finish(name);
+        }, 1000);
+    }
+    startWithDate() {
+        setInterval(() => {
+            //since finish is optional we check for it
+            if (!this.finishWithDate)
+                return;
+            //then run it
+            this.finishWithDate(new Date().toString());
+        }, 1000);
+    }
+}
+//new Timer instance
+let myTimer = new Timer(); //note how we use the same class as the type.
+//now we write the finish method, the idea of not decalring it is that we can change his behaviour whenever we want.
+myTimer.finish = (name) => {
+    console.log("Event finished by " + name);
+};
+myTimer.finishWithDate = (date) => {
+    console.log("Event finished on: " + date);
+};
+//the we run the start of the timer.
+myTimer.start("nico"); //Event finished by nico
+myTimer.startWithDate(); //Event finished on: Thu Dec 08 2022 06:57:42 GMT-0300 (Argentina Standard Time)
+//What we have here? methods that gives us a callback to what we want when they finish.
+//we can delete this properties too. in case we need something to stop executing.
+let del = () => delete myTimer.finishWithDate;
+setTimeout(del, 4000);
+//this quit all the "finish With Date" executions of the code.

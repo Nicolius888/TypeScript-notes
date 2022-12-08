@@ -891,7 +891,7 @@ myTimer.startWithDate()//Event finished on: Thu Dec 08 2022 06:57:42 GMT-0300 (A
 
 //we can delete this properties too. in case we need something to stop executing.
 
-// let del = () => delete myTimer.finishWithDate
+// let del = () => delete myTimer.finishWithDates
 // setTimeout(del, 4000)
 
 //now the execution stops after 3 "finish with date" excutions.

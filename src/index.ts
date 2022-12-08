@@ -731,3 +731,64 @@ console.log(generate.next().value)//2
 console.log(generate.next().value)//3
 console.log(generate.next().value)//4
 console.log(generate.next().value)//undefined
+
+
+
+//------WORKERS AND WATCHERS:
+
+
+//watcher
+function* watcher(value : number){
+    yield value             //initial value emittion,(given when invoke the watcher)
+    yield* worker(value)    //yield* to call another generator function to emit his values (this will work until the worker function ends)
+    yield value + 4         //next, our final value generation
+}
+
+
+//worker
+function* worker(value : number){
+    yield value + 1
+    yield value + 2
+    yield value + 3
+}
+
+
+//save watcher
+let generator = watcher(0)
+
+console.log("wa:" + generator.next().value)//0 by watcher
+console.log("wo:" + generator.next().value)//1 by worker
+console.log("wo:" + generator.next().value)//2 by worker
+console.log("wo:" + generator.next().value)//3 by worker
+console.log("wa:" + generator.next().value)//4 by worker
+
+
+
+//---------FUNCTIONS OVERLOAD:
+
+
+function versatilTask(input : string | number) : void {
+    typeof(input) === "string" ? console.log("your string is:" + input) : console.log("your number is:" + input)
+}
+
+versatilTask(55)    //your number is:55
+versatilTask("hey") //your string is:hey
+//just declaring different possibles types for an input, we can develop multiple behaviours.
+
+
+
+
+
+
+//----------DATA PERSISTENCE:
+
+//1. LocalStorage
+//             ---->Saves data in the browser. (They are not automatically deleted)               
+//2. SessionStorage
+//             ---->Saves data in the browser session 
+//3. Cookies
+//             ---->Saves data with an expiration date and has an URL scope.
+
+
+
+

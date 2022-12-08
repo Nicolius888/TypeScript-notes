@@ -446,7 +446,7 @@ function* generatorEx() {
     //yield-->keyword to emit values
     let index = 0;
     while (index < 5) {
-        yield ++index; //emit an incremented value (value++ is return then increment, thats why we get from 0 to 4)
+        yield index++; //emit an incremented value (value++ is return then increment, thats why we get from 0 to 4)
     }
 }
 //save it in a variable
@@ -458,3 +458,30 @@ console.log(generate.next().value); //2
 console.log(generate.next().value); //3
 console.log(generate.next().value); //4
 console.log(generate.next().value); //undefined
+//------WORKERS AND WATCHERS:
+//watcher
+function* watcher(value) {
+    yield value; //initial value emittion,(given when invoke the watcher)
+    yield* worker(value); //yield* to call another generator function to emit his values (this will work until the worker function ends)
+    yield value + 4; //next, our final value generation
+}
+//worker
+function* worker(value) {
+    yield value + 1;
+    yield value + 2;
+    yield value + 3;
+}
+//save watcher
+let generator = watcher(0);
+console.log("wa:" + generator.next().value); //0 by watcher
+console.log("wo:" + generator.next().value); //1 by worker
+console.log("wo:" + generator.next().value); //2 by worker
+console.log("wo:" + generator.next().value); //3 by worker
+console.log("wa:" + generator.next().value); //4 by worker
+//---------FUNCTIONS OVERLOAD:
+function versatilTask(input) {
+    typeof (input) === "string" ? console.log("your string is:" + input) : console.log("your number is:" + input);
+}
+versatilTask(55); //
+versatilTask("hey"); //
+//just declaring different possibles types for an input, we can develop multiple behaviours.
